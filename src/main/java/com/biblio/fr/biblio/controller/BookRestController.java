@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.biblio.fr.biblio.entite.Book;
@@ -27,10 +29,14 @@ import com.biblio.fr.biblio.entite.Category;
 import com.biblio.fr.biblio.entite.CategoryDTO;
 import com.biblio.fr.biblio.service.impl.BookServiceImpl;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+@RestController
+@RequestMapping("/rest/book/api")
+@Api(value = "Book Rest Controller: contains all operations for managing books")
 public class BookRestController {
 	public static final Logger LOGGER = LoggerFactory.getLogger(BookRestController.class);
 
