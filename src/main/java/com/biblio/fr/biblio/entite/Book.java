@@ -102,7 +102,7 @@ public class Book {
 		this.author = author;
 	}
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(name = "CAT_CODE", referencedColumnName = "CODE")
 	public Category getCategory() {
 		return category;

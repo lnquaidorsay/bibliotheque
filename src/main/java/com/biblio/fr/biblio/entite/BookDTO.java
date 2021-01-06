@@ -2,10 +2,23 @@ package com.biblio.fr.biblio.entite;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(value = "Book Model")
+//@JsonIgnoreProperties(ignoreUnknown = true)
+/*
+ * https://www.baeldung.com/jackson-deserialization
+ * https://stackoverflow.com/questions/55032293/cannot-construct-instance-of-
+ * class-name-although-at-least-on-creator-exists
+ * https://stackoverflow.com/questions/45110371/no-string-argument-constructor-
+ * factory-method-to-deserialize-from-string-value/45110497
+ */
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonDeserialize(using = BookDTODeserializer.class)
 public class BookDTO implements Comparable<BookDTO> {
 	@ApiModelProperty(value = "Book id")
 	private Integer id;
@@ -99,4 +112,27 @@ public class BookDTO implements Comparable<BookDTO> {
 	public int compareTo(BookDTO o) {
 		return title.compareToIgnoreCase(o.getTitle());
 	}
+
+	public BookDTO() {
+		super();
+	}
+
+	public BookDTO(String title, String isbn, LocalDate releaseDate, Integer totalExamplaries, String author,
+			CategoryDTO category) {
+		super();
+		this.title = title;
+		this.isbn = isbn;
+		this.releaseDate = releaseDate;
+		this.totalExamplaries = totalExamplaries;
+		this.author = author;
+		this.category = category;
+	}
+
+	/*
+	 * public BookDTO(String title, String isbn, Integer totalExamplaries, String
+	 * author, CategoryDTO category) { super(); this.title = title; this.isbn =
+	 * isbn; this.totalExamplaries = totalExamplaries; this.author = author;
+	 * this.category = category; }
+	 */
+
 }

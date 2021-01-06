@@ -1,9 +1,13 @@
 package com.biblio.fr.biblio.entite;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(value = "Category Model")
+//@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonDeserialize(using = CategoryDTODeserializer.class)
 public class CategoryDTO implements Comparable<CategoryDTO> {
 	public CategoryDTO() {
 	}

@@ -5,6 +5,8 @@ import java.util.List;
 import com.biblio.fr.biblio.entite.Book;
 
 public interface IBookService {
+	public List<Book> getAllBooks();
+
 	public Book saveBook(Book book);
 
 	public Book updateBook(Book book);
