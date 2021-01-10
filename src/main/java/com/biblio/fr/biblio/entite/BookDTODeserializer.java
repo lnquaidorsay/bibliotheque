@@ -37,10 +37,11 @@ public class BookDTODeserializer extends StdDeserializer<BookDTO> {
 		// System.out.println("registerDate : " + registerDate);
 		Integer totalExamplaries = (Integer) ((IntNode) node.get("totalExamplaries")).numberValue();
 		String author = node.get("author").asText();
+		// Category myCat = node.get("category").
 		// String codeCategory = node.get("code").asText();
-		String codeCategory = "I";
+		String codeCategory = "M";
 		// String labelCategory = node.get("label").asText();
-		String labelCategory = "Informatique";
+		String labelCategory = "Mathematique";
 
 		return new BookDTO(title, isbn, releaseDate, totalExamplaries, author,
 				new CategoryDTO(codeCategory, labelCategory));
