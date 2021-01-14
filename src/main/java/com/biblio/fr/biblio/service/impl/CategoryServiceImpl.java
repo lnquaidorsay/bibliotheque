@@ -20,4 +20,9 @@ public class CategoryServiceImpl implements ICategoryService {
 		return categoryDao.findAll();
 	}
 
+	@Override
+	public Category findCategoryByCode(String code) {
+		return categoryDao.findCategoryByCode(code);
+	}
+
 }

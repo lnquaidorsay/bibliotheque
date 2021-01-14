@@ -44,6 +44,9 @@ public class BookDTO implements Comparable<BookDTO> {
 	@ApiModelProperty(value = "Book category")
 	private CategoryDTO category;
 
+	@ApiModelProperty(value = "Book category")
+	private Category categ;
+
 	public Integer getId() {
 		return id;
 	}
@@ -108,6 +111,14 @@ public class BookDTO implements Comparable<BookDTO> {
 		this.category = category;
 	}
 
+	public Category getCateg() {
+		return categ;
+	}
+
+	public void setCateg(Category categ) {
+		this.categ = categ;
+	}
+
 	@Override
 	public int compareTo(BookDTO o) {
 		return title.compareToIgnoreCase(o.getTitle());
@@ -117,15 +128,13 @@ public class BookDTO implements Comparable<BookDTO> {
 		super();
 	}
 
-	public BookDTO(String title, String isbn, LocalDate releaseDate, Integer totalExamplaries, String author,
-			CategoryDTO category) {
+	public BookDTO(String title, String isbn, LocalDate releaseDate, Integer totalExamplaries, String author) {
 		super();
 		this.title = title;
 		this.isbn = isbn;
 		this.releaseDate = releaseDate;
 		this.totalExamplaries = totalExamplaries;
 		this.author = author;
-		this.category = category;
 	}
 
 	/*

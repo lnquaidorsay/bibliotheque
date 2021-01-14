@@ -102,8 +102,9 @@ public class Book {
 		this.author = author;
 	}
 
-	@ManyToOne(optional = false, cascade = CascadeType.ALL)
-	@JoinColumn(name = "CAT_CODE", referencedColumnName = "CODE")
+	// @ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "CAT_CODE", referencedColumnName = "ID")
 	public Category getCategory() {
 		return category;
 	}

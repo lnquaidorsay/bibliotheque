@@ -20,6 +20,9 @@ public class BookDTODeserializer extends StdDeserializer<BookDTO> {
 		// TODO Auto-generated method stub
 		JsonNode node = p.getCodec().readTree(p);
 		// Integer id = (Integer) ((IntNode) node.get("id")).numberValue();
+		JsonNode categoryCodeNode = node.at("/category/code");
+		System.out.println("categoryCodeNode : ");
+		System.out.print(categoryCodeNode);
 		String title = node.get("title").asText();
 		String isbn = node.get("isbn").asText();
 		String string = "2018-04-10T04:00:00.000Z"; // 2021-01-05T00:00:00.000Z
@@ -34,17 +37,17 @@ public class BookDTODeserializer extends StdDeserializer<BookDTO> {
 		// LocalDate registerDate = LocalDate.parse(node.get("registerDate").asText(),
 		// formatter);
 		System.out.println("releaseDate  : " + releaseDate);
+		JsonNode cat = node.get("category");
 		// System.out.println("registerDate : " + registerDate);
 		Integer totalExamplaries = (Integer) ((IntNode) node.get("totalExamplaries")).numberValue();
 		String author = node.get("author").asText();
-		// Category myCat = node.get("category").
+		// Category myCat = node.get("category")
 		// String codeCategory = node.get("code").asText();
 		String codeCategory = "M";
 		// String labelCategory = node.get("label").asText();
 		String labelCategory = "Mathematique";
 
-		return new BookDTO(title, isbn, releaseDate, totalExamplaries, author,
-				new CategoryDTO(codeCategory, labelCategory));
+		return new BookDTO(title, isbn, releaseDate, totalExamplaries, author);
 		// return null;
 	}
 

@@ -26,8 +26,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.biblio.fr.biblio.entite.Book;
 import com.biblio.fr.biblio.entite.BookDTO;
 import com.biblio.fr.biblio.entite.Category;
-import com.biblio.fr.biblio.entite.CategoryDTO;
+import com.biblio.fr.biblio.repository.ICategoryDao;
 import com.biblio.fr.biblio.service.impl.BookServiceImpl;
+import com.biblio.fr.biblio.service.impl.CategoryServiceImpl;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,6 +43,12 @@ public class BookRestController {
 
 	@Autowired
 	private BookServiceImpl bookService;
+
+	@Autowired
+	private CategoryServiceImpl categoryServiceImpl;
+
+	@Autowired
+	private ICategoryDao iCategoryDao;
 
 	@GetMapping("/allbooks")
 	@ApiOperation(value = "List all book books of the Library", response = List.class)
@@ -79,6 +86,32 @@ public class BookRestController {
 			return new ResponseEntity<BookDTO>(bookDTO, HttpStatus.CREATED);
 		}
 		return new ResponseEntity<BookDTO>(HttpStatus.NOT_MODIFIED);
+
+	}
+
+	@RequestMapping(value = "/addBook2", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ApiOperation(value = "Add a new Book in the Library", response = BookDTO.class)
+	@ApiResponses(value = { @ApiResponse(code = 409, message = "Conflict: the book already exist"),
+			@ApiResponse(code = 201, message = "Created: the book is successfully inserted"),
+			@ApiResponse(code = 304, message = "Not Modified: the book is unsuccessfully inserted") })
+	public ResponseEntity<Book> createNewBook2(@RequestBody Book bookDTORequest) {
+		// , UriComponentsBuilder uriComponentBuilder
+		Book existingBook = bookService.findBookByIsbn(bookDTORequest.getIsbn());
+		if (existingBook != null) {
+			return new ResponseEntity<Book>(HttpStatus.CONFLICT);
+		}
+		// Book bookRequest = mapBookDTOToBook(bookDTORequest);
+		Category cat = iCategoryDao.findByCode(bookDTORequest.getCategory().getCode());
+		bookDTORequest.setCategory(cat);
+		bookDTORequest.setRegisterDate(LocalDate.now());
+		Book book = bookService.saveBook(bookDTORequest);
+		if (book != null && book.getId() != null) {
+			BookDTO bookDTO = mapBookToBookDTO(book);
+			// return new ResponseEntity<BookDTO>(bookDTO, HttpStatus.CREATED);
+			return new ResponseEntity<Book>(book, HttpStatus.CREATED);
+		}
+		// return new ResponseEntity<BookDTO>(HttpStatus.NOT_MODIFIED);
+		return new ResponseEntity<Book>(HttpStatus.NOT_MODIFIED);
 
 	}
 
@@ -152,7 +185,11 @@ public class BookRestController {
 		ModelMapper mapper = new ModelMapper();
 		BookDTO bookDTO = mapper.map(book, BookDTO.class);
 		if (book.getCategory() != null) {
-			bookDTO.setCategory(new CategoryDTO(book.getCategory().getCode(), book.getCategory().getLabel()));
+			// Category categ =
+			// categoryServiceImpl.findCategoryByCode(book.getCategory().getCode());
+			// bookDTO.setCategory(new CategoryDTO(book.getCategory().getCode(),
+			// book.getCategory().getLabel()));
+			bookDTO.setCateg(iCategoryDao.findByCode(bookDTO.getCategory().getCode()));
 		}
 		return bookDTO;
 	}
@@ -166,7 +203,8 @@ public class BookRestController {
 	private Book mapBookDTOToBook(BookDTO bookDTO) {
 		ModelMapper mapper = new ModelMapper();
 		Book book = mapper.map(bookDTO, Book.class);
-		book.setCategory(new Category(bookDTO.getCategory().getCode(), ""));
+		// book.setCategory(new Category(bookDTO.getCategory().getCode(), ""));
+		book.setCategory(iCategoryDao.findByCode(bookDTO.getCategory().getCode()));
 		book.setRegisterDate(LocalDate.now());
 		return book;
 	}

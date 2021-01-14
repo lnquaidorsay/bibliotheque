@@ -18,6 +18,9 @@ public class CategoryDTO implements Comparable<CategoryDTO> {
 		this.label = label;
 	}
 
+	@ApiModelProperty(value = "Category id")
+	private Integer id;
+
 	@ApiModelProperty(value = "Category code")
 	private String code;
 
@@ -38,6 +41,14 @@ public class CategoryDTO implements Comparable<CategoryDTO> {
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	@Override

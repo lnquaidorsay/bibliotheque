@@ -6,4 +6,6 @@ import com.biblio.fr.biblio.entite.Category;
 
 public interface ICategoryService {
 	public List<Category> getAllCategories();
+
+	public Category findCategoryByCode(String code);
 }
