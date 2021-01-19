@@ -134,6 +134,30 @@ public class BookRestController {
 		return new ResponseEntity<BookDTO>(HttpStatus.NOT_MODIFIED);
 	}
 
+	@PutMapping("/updateBook2")
+	@ApiOperation(value = "Update/Modify an existing Book in the Library", response = BookDTO.class)
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "Not Found : the book does not exist"),
+			@ApiResponse(code = 200, message = "Ok: the book is successfully updated"),
+			@ApiResponse(code = 304, message = "Not Modified: the book is unsuccessfully updated") })
+	public ResponseEntity<Book> updateBook2(@RequestBody Book bookDTORequest) {
+
+		/*
+		 * if (!bookService.checkIfIdExists(bookDTORequest.getId())) { return new
+		 * ResponseEntity<Book>(HttpStatus.NOT_FOUND); }
+		 */
+
+		if (bookService.getBookById(bookDTORequest) == null) {
+			return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
+		}
+		// Book bookRequest = mapBookDTOToBook(bookDTORequest);
+		bookDTORequest.setCategory(iCategoryDao.findByCode(bookDTORequest.getCategory().getCode()));
+		Book book = bookService.updateBook(bookDTORequest);
+		if (book != null) {
+			return new ResponseEntity<Book>(book, HttpStatus.OK);
+		}
+		return new ResponseEntity<Book>(HttpStatus.NOT_MODIFIED);
+	}
+
 	@DeleteMapping("/deleteBook/{bookId}")
 	@ApiOperation(value = "Delete a Book in the Library, if the book does not exist, nothing is done", response = String.class)
 	@ApiResponse(code = 204, message = "No Content: Book sucessfully deleted")

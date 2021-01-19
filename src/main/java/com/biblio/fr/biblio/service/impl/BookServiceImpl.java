@@ -1,5 +1,6 @@
 package com.biblio.fr.biblio.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,15 @@ public class BookServiceImpl implements IBookService {
 
 	@Override
 	public Book updateBook(Book book) {
-		return bookDao.save(book);
+		Book bookToMaj = getBookById(book);
+		bookToMaj.setAuthor(book.getAuthor());
+		bookToMaj.setTitle(book.getTitle());
+		bookToMaj.setIsbn(book.getIsbn());
+		bookToMaj.setTotalExamplaries(book.getTotalExamplaries());
+		bookToMaj.setRegisterDate(LocalDate.now());
+		bookToMaj.setReleaseDate(book.getReleaseDate());
+		bookToMaj.setCategory(book.getCategory());
+		return bookDao.save(bookToMaj);
 	}
 
 	@Override
@@ -54,6 +63,11 @@ public class BookServiceImpl implements IBookService {
 	@Override
 	public List<Book> getAllBooks() {
 		return bookDao.findAll();
+	}
+
+	@Override
+	public Book getBookById(Book book) {
+		return bookDao.findById(book.getId()).get();
 	}
 
 }

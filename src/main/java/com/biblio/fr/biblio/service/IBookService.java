@@ -9,6 +9,8 @@ public interface IBookService {
 
 	public Book saveBook(Book book);
 
+	public Book getBookById(Book book);
+
 	public Book updateBook(Book book);
 
 	public void deleteBook(Integer bookId);
